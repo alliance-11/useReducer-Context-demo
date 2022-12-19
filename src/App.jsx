@@ -1,51 +1,41 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import "./App.css";
+import { initialState, reducer } from "./reducer";
 
 function App() {
+  // state => contains ALL our data
+  // dispatch => our only SETTER for everything!
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [message, setMessage] = useState("")
+  // zweiter Reducer für States, die alle zusammengehören (z.B. todo states)
+  // const [stateTodos, dispatchTodos] = useReducer(reducerTodos, initialStateTodos);
 
-  const [watches, setWatches] = useState([
-    { _id: "w1", name: "Medusa", price: 599 },
-    { _id: "w2", name: "Apple", price: 399 },
-    { _id: "w3", name: "Luxury Snake", price: 799 },
-  ]);
+  // destructure items from state we need in this page
+  const { watches, message } = state;
 
   // change price => increase by 1 on click
   const onPriceIncrease = (id) => {
-
-    // update price logic
-    const watchesCopy = watches.map( watch => {
-
-      // if we want to do MULTIPLE things on update
-      // ternary not possible anymore => if else helps here! 
-      if(watch._id === id) {
-        setMessage(`Updated ${watch.name} - new price: ${watch.price + 1}`);        
-        return { ...watch, price: watch.price + 1 }
-      }
-      else 
-        return watch
-    })
-    setWatches(watchesCopy)
+    // Step 1: Create an ACTION
+    const action = { type: "UPDATE_WATCH", payload: id };
+    // Step 2: SEND action to reducer using dispatch !
+    dispatch(action)
   };
 
   // convert watches to "HTML"
   const jsxWatches = watches.map((watch) => (
     <div key={watch._id}>
       <span>{watch.name}</span> &nbsp;&nbsp;
-      <span onClick={() => onPriceIncrease(watch._id)}>{watch.price} &euro;</span>
+      <span onClick={() => onPriceIncrease(watch._id)}>
+        {watch.price} &euro;
+      </span>
     </div>
   ));
 
   return (
     <div className="App">
       <header className="App-header">
-        <div className="watches">
-        {jsxWatches}
-        </div>
-        <div className="message">
-          {message}
-        </div>
+        <div className="watches">{jsxWatches}</div>
+        <div className="message">{message}</div>
       </header>
     </div>
   );
