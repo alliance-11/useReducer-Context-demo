@@ -1,8 +1,10 @@
 import { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
+
+  const [message, setMessage] = useState("")
+
   const [watches, setWatches] = useState([
     { _id: "w1", name: "Medusa", price: 599 },
     { _id: "w2", name: "Apple", price: 399 },
@@ -11,11 +13,18 @@ function App() {
 
   // change price => increase by 1 on click
   const onPriceIncrease = (id) => {
-    console.log(id);
 
     // update price logic
     const watchesCopy = watches.map( watch => {
-      return watch._id === id ? { ...watch, price: watch.price + 1 } : watch
+
+      // if we want to do MULTIPLE things on update
+      // ternary not possible anymore => if else helps here! 
+      if(watch._id === id) {
+        setMessage(`Updated ${watch.name} - new price: ${watch.price + 1}`);        
+        return { ...watch, price: watch.price + 1 }
+      }
+      else 
+        return watch
     })
     setWatches(watchesCopy)
   };
@@ -30,7 +39,14 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">{jsxWatches}</header>
+      <header className="App-header">
+        <div className="watches">
+        {jsxWatches}
+        </div>
+        <div className="message">
+          {message}
+        </div>
+      </header>
     </div>
   );
 }
