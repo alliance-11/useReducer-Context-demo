@@ -1,11 +1,12 @@
-import { useReducer } from "react";
 import "./App.css";
-import { initialState, reducer } from "./reducer";
+import { useDataContext } from "./contexts/DataProvider";
 
 function App() {
   // state => contains ALL our data
   // dispatch => our only SETTER for everything!
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = useDataContext()
+
+  console.log(state)
 
   // zweiter Reducer für States, die alle zusammengehören (z.B. todo states)
   // const [stateTodos, dispatchTodos] = useReducer(reducerTodos, initialStateTodos);

@@ -1,6 +1,7 @@
 // initial data (= frontend database)
 export const initialState = {
   message: "",
+  feedback: [],
   watches: [
     { _id: "w1", name: "Medusa", price: 599 },
     { _id: "w2", name: "Apple", price: 399 },
